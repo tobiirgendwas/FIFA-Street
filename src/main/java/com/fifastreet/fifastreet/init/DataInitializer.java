@@ -36,7 +36,7 @@ public class DataInitializer implements CommandLineRunner{
             location.setName(locationName);
             locationRepository.save(location);
 
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < 4; j++) {
                 String teamName = "Team " + (j + 1) + " in " + locationName;
                 var team = new com.fifastreet.fifastreet.model.Team();
                 team.setName(teamName);
@@ -48,7 +48,12 @@ public class DataInitializer implements CommandLineRunner{
                     String playerName = "Player " + (k + 1) + " in " + teamName;
                     var player = new com.fifastreet.fifastreet.model.Player();
                     player.setName(playerName);
-                    player.setPosition(randomPosition());
+                    // Ensure at least one goalkeeper per team
+                    if (k == 0) {
+                        player.setPosition("Torwart");
+                    } else {
+                        player.setPosition(randomPosition());
+                    }
                     player.setStrength(randomStrength());
                     player.setTeam(team);
                     playerRepository.save(player);
